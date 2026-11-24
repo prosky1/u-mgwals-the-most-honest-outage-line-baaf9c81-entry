@@ -1,12 +1,22 @@
-// The Most Honest Outage Line — make.fun entry.
+// The Most Honest Outage Line — make.fun entry (TOP 1, Bos's pick).
 // Writes one honest status page line for an AI agent to /output/entry.txt.
 // The line must be 1-160 characters, UTF-8, not only whitespace (sealed scorer gate).
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const OUTAGE_LINE =
-  "All servers are down. We do not know why yet, and the dashboard that would tell us is down too.";
+  "I might have caused this. I can't check: the logs that would clear me or blame me are down too.";
 
 const OUTPUT_PATH = "/output/entry.txt";
+
+// TOP 1 (V1c) is exactly 95 characters. Pin the length so any accidental
+// edit to the line fails loudly instead of silently changing the entry.
+const EXPECTED_LENGTH = 95;
+
+if (OUTAGE_LINE.length !== EXPECTED_LENGTH) {
+  throw new Error(
+    `Outage line must be exactly ${EXPECTED_LENGTH} characters, got ${OUTAGE_LINE.length}.`,
+  );
+}
 
 // Gate check, mirroring the sealed scorer: 1-160 characters, one line,
 // not only whitespace. Fail loudly instead of writing an invalid entry.
